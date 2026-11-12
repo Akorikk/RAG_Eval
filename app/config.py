@@ -2,7 +2,7 @@ from functools import lru_cache
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent[2]
+BASE_DIR = Path(__file__).resolve().parents[1]
 
 class Settings(BaseSettings):
     app_name : str = "RAG Eval"
@@ -25,4 +25,9 @@ class Settings(BaseSettings):
 
     model_path.mkdir(parents=True, exist_ok=True)
 
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8") 
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+
+
+@lru_cache()
+def get_settings() -> Settings:
+    return Settings() 
